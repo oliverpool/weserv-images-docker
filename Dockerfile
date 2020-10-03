@@ -57,9 +57,6 @@ RUN curl -L >weserv.tar.gz https://github.com/weserv/images/archive/$WESERV_VERS
  && mkdir -p /var/www \
  && mv images-$WESERV_VERSION /var/www/imagesweserv
 
-RUN ls /var/www
-RUN ls /var/www/imagesweserv
-
 WORKDIR /var/www/imagesweserv/build
 
 # Build CMake-based project
@@ -81,9 +78,13 @@ RUN cmake3 .. \
 --pid-path=/run/nginx.pid;\
 --lock-path=/run/lock/subsys/nginx;\
 --user=nginx;\
---group=nginx" \
-    && make -j$(nproc) \
-    && ldconfig
+--group=nginx"
+
+RUN make -j$(nproc)
+
+RUN ldconfig
+
+RUN cat Makefile
 
 WORKDIR /var/www/imagesweserv
 
