@@ -1,7 +1,5 @@
 FROM centos:8
 
-ARG NGINX_VERSION=1.19.2
-
 LABEL maintainer="Kleis Auke Wolthuizen <info@kleisauke.nl>"
 
 # Set default timezone
@@ -52,11 +50,18 @@ RUN groupadd nginx \
     && useradd -r -g nginx -s /sbin/nologin -c "Nginx web server" nginx
 
 # Clone the repository
-RUN git clone --depth=1 --recurse-submodules --shallow-submodules https://github.com/weserv/images.git /var/www/imagesweserv
+ARG WESERV_VERSION=5.x
+RUN curl -L >weserv.tar.gz https://github.com/weserv/images/archive/$WESERV_VERSION.tar.gz \
+ && tar -xzvf weserv.tar.gz -C /var/www/imagesweserv \
+ && rm weserv.tar.gz
+
+RUN ls .
+RUN ls /var/www/imagesweserv
 
 WORKDIR /var/www/imagesweserv/build
 
 # Build CMake-based project
+ARG NGINX_VERSION=1.19.2
 RUN cmake3 .. \
        -DCMAKE_BUILD_TYPE=Release \
        -DNGX_VERSION=$NGINX_VERSION \
