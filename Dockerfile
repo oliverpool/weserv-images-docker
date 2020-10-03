@@ -54,10 +54,10 @@ ARG WESERV_VERSION=5.x
 RUN curl -L >weserv.tar.gz https://github.com/weserv/images/archive/$WESERV_VERSION.tar.gz \
  && tar -xzvf weserv.tar.gz \
  && rm weserv.tar.gz \
- && ls /var/www \
- && ls images-$WESERV_VERSION \
+ && mkdir -p /var/www \
  && mv images-$WESERV_VERSION /var/www/imagesweserv
 
+RUN ls /var/www
 RUN ls /var/www/imagesweserv
 
 WORKDIR /var/www/imagesweserv/build
