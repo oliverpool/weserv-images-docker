@@ -52,6 +52,7 @@ RUN groupadd nginx \
 # Clone the repository
 ARG WESERV_VERSION=5.x
 RUN curl -L >weserv.tar.gz https://github.com/weserv/images/archive/$WESERV_VERSION.tar.gz \
+ && mkdir -p /var/www/imagesweserv \
  && tar -xzvf weserv.tar.gz -C /var/www/imagesweserv \
  && rm weserv.tar.gz
 
