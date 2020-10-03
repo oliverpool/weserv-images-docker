@@ -53,8 +53,11 @@ RUN groupadd nginx \
 ARG WESERV_VERSION=5.x
 RUN curl -L >weserv.tar.gz https://github.com/weserv/images/archive/$WESERV_VERSION.tar.gz \
  && mkdir -p /var/www/imagesweserv \
- && tar -xzvf weserv.tar.gz -C /var/www/imagesweserv \
- && rm weserv.tar.gz
+ && tar -xzvf weserv.tar.gz \
+ && rm weserv.tar.gz \
+ && ls . \
+ && ls images-$WESERV_VERSION \
+ && mv images-$WESERV_VERSION /var/www/imagesweserv
 
 RUN ls .
 RUN ls /var/www/imagesweserv
