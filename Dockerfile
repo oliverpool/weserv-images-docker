@@ -64,9 +64,9 @@ ARG NGINX_VERSION=1.19.2
 RUN cmake3 .. \
        -DCMAKE_BUILD_TYPE=Release \
        -DNGX_VERSION=$NGINX_VERSION \
-       -DCUSTOM_NGX_FLAGS="--prefix=/usr/share/nginx;\
---with-cc-opt="-static -static-libgcc" \
---with-ld-opt="-static" \
+       -DCUSTOM_NGX_FLAGS='--prefix=/usr/share/nginx;\
+--with-cc-opt="-static -static-libgcc";\
+--with-ld-opt="-static";\
 --sbin-path=/usr/sbin/nginx;\
 --modules-path=/usr/lib64/nginx/modules;\
 --conf-path=/etc/nginx/nginx.conf;\
@@ -80,7 +80,7 @@ RUN cmake3 .. \
 --pid-path=/run/nginx.pid;\
 --lock-path=/run/lock/subsys/nginx;\
 --user=nginx;\
---group=nginx"
+--group=nginx'
 
 RUN make -j$(nproc)
 
