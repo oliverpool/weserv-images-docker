@@ -35,7 +35,6 @@ RUN dnf install -y epel-release \
     && dnf install -y --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm \
     && rpmkeys --import file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-el-8  \
     && dnf install -y --setopt=tsflags=nodocs \
-        git \
         cmake3 \
         vips-full-devel \
         make \
