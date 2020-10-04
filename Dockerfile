@@ -83,8 +83,6 @@ RUN make -j$(nproc)
 
 RUN ldconfig
 
-RUN cat Makefile
-
 WORKDIR /var/www/imagesweserv
 
 # Ensure nginx directories exist
