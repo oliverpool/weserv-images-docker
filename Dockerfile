@@ -100,9 +100,8 @@ RUN mkdir -p -m 700 /var/lib/nginx \
     # Copy nginx configuration to the appropriate location
     && cp /var/www/imagesweserv/ngx_conf/*.conf /etc/nginx
 
+EXPOSE 80
+
 STOPSIGNAL SIGTERM
 
-ENV PORT 80
-
-ENTRYPOINT sed -i "s/80 default_server/$PORT default_server/g" /etc/nginx/imagesweserv.conf && nginx -g 'daemon off;'
-
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
