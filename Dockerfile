@@ -65,6 +65,8 @@ RUN cmake3 .. \
        -DCMAKE_BUILD_TYPE=Release \
        -DNGX_VERSION=$NGINX_VERSION \
        -DCUSTOM_NGX_FLAGS="--prefix=/usr/share/nginx;\
+--with-cc-opt="-static -static-libgcc" \
+--with-ld-opt="-static" \
 --sbin-path=/usr/sbin/nginx;\
 --modules-path=/usr/lib64/nginx/modules;\
 --conf-path=/etc/nginx/nginx.conf;\
@@ -83,6 +85,8 @@ RUN cmake3 .. \
 RUN make -j$(nproc)
 
 RUN ldconfig
+
+RUN ldd /usr/sbin/nginx
 
 WORKDIR /var/www/imagesweserv
 
