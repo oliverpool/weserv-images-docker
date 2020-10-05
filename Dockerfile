@@ -97,6 +97,8 @@ FROM builder as runner
 
 COPY --from=builder /usr/sbin/nginx /usr/sbin/nginx
 
+RUN mkdir -p /opt/libs
+
 COPY --from=builder /var/www/imagesweserv/build/libs.tar /opt/libs
 
 # Copy nginx configuration to the appropriate location
