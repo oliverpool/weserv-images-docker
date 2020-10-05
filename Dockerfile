@@ -79,19 +79,11 @@ RUN cmake3 .. \
 --lock-path=/run/lock/subsys/nginx;\
 --user=nginx;\
 --group=nginx"
-
 RUN make -j$(nproc)
-
 RUN ldconfig
-
-RUN ldd /usr/sbin/nginx
-
-RUN ldd /usr/sbin/nginx | cut -d" " -f3
 
 # from https://myheutagogy.com/2020/04/28/minimizing-the-size-of-docker-images-using-multi-stage-builds/
 RUN ldd /usr/sbin/nginx | cut -d" " -f3 | xargs tar --dereference -cf libs.tar
-
-RUN ls && pwd
 
 FROM builder as runner
 
@@ -103,12 +95,6 @@ COPY --from=builder /var/www/imagesweserv/ngx_conf/ /etc/nginx
 COPY --from=builder /var/www/imagesweserv/build/libs.tar /
 RUN tar -xf libs.tar \
     && rm *.tar
-   
-RUN ldd /usr/sbin/nginx
-
-RUN echo $LD_LIBRARY_PATH
-
-ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/libs
 
 # Ensure nginx directories exist
 RUN mkdir -p -m 700 /var/lib/nginx \
@@ -120,8 +106,8 @@ RUN mkdir -p -m 700 /var/lib/nginx \
     && ln -sf /dev/stdout /var/log/nginx/weserv-access.log \
     && ln -sf /dev/stderr /var/log/nginx/weserv-error.log
 
-EXPOSE 80
-
 STOPSIGNAL SIGTERM
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+ENV PORT 80
+
+ENTRYPOINT sed -i "s/80 default_server/$PORT default_server/g" /etc/nginx/imagesweserv.conf && nginx -g 'daemon off;'
