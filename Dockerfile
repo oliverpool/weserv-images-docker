@@ -91,7 +91,9 @@ RUN ldd /usr/sbin/nginx | cut -d" " -f3
 # from https://myheutagogy.com/2020/04/28/minimizing-the-size-of-docker-images-using-multi-stage-builds/
 RUN ldd /usr/sbin/nginx | cut -d" " -f3 | xargs tar --dereference -cf libs.tar
 
-FROM builder
+RUN ls && pwd
+
+FROM builder as runner
 
 COPY --from=builder /usr/sbin/nginx /usr/sbin/nginx
 
