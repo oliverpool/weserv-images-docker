@@ -95,21 +95,16 @@ RUN ls && pwd
 
 FROM builder as runner
 
+# Copy nginx and its configuration to the appropriate location
 COPY --from=builder /usr/sbin/nginx /usr/sbin/nginx
-
-RUN mkdir -p /opt/libs
-
-COPY --from=builder /var/www/imagesweserv/build/libs.tar /opt/libs
-
-# Copy nginx configuration to the appropriate location
 COPY --from=builder /var/www/imagesweserv/ngx_conf/ /etc/nginx
 
-WORKDIR /opt/libs
-
+# Copy linked libs
+COPY --from=builder /var/www/imagesweserv/build/libs.tar /
 RUN tar -xf libs.tar \
     && rm *.tar
    
-RUN ls /opt/libs
+RUN ldd /usr/sbin/nginx
 
 RUN echo $LD_LIBRARY_PATH
 
