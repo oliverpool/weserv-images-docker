@@ -102,8 +102,8 @@ COPY --from=builder /var/www/imagesweserv/ngx_conf/ /etc/nginx
 
 WORKDIR /opt/libs
 
-RUN tar -xf libs.tar &&
-    rm *.tar
+RUN tar -xf libs.tar \
+    && rm *.tar
    
 RUN ls /opt/libs
 
